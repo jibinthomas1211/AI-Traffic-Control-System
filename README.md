@@ -6,11 +6,21 @@ Modern multi-page Flask app that uses YOLOv5 to detect vehicle density and dynam
 This project is an end-to-end smart traffic signal system. Each approach uploads an image or video feed that is analyzed with YOLOv5 to count vehicles. The controller prioritizes the busiest approach, assigns a dynamic green time based on density, and enforces realistic yellow transitions both before granting right-of-way and before returning to red. A live dashboard shows per-approach status, timers, and vehicle counts, and the entire flow (landing → configuration → monitor) runs inside a simple Flask application.
 
 ## Screenshots
-Add your screenshots to `docs/screenshots/` and update the names below (these are example filenames):
 
-- Landing: ![Landing](Screenshots/landing page.png)
-- Configuration: ![Configuration](Screenshots/Config page.png)
-- Monitor: ![Monitor](Screenshots/traffic light.png)
+### 1. Landing Page
+The landing page introduces the AI Traffic Control System with an overview of features and project description. Users can click "Get Started" to begin configuration.
+
+![Landing Page](Screenshots/landing%20page.png)
+
+### 2. Configuration Page
+Configure the number of traffic lights (2-6) and upload image/video sources for each intersection approach. The system analyzes each upload using YOLOv5 to count vehicles before starting the traffic control system.
+
+![Configuration Page](Screenshots/Config%20page.png)
+
+### 3. Traffic Light Monitor
+Real-time traffic light monitoring dashboard showing live status (Red/Yellow/Green), countdown timers, and vehicle counts for each intersection. The system automatically cycles through lights based on traffic density with proper yellow light transitions.
+
+![Traffic Light Monitor](Screenshots/traffic%20light.png)
 
 ## Features
 - Multi-page flow: landing → configuration → live monitor
