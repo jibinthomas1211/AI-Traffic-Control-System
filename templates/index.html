@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Traffic Control System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1E293B 0%, #2d3e5a 50%, #5270A1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 100px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #000000;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+            text-align: left;
+        }
+
+        .feature {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            color: #000000;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .description {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: left;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .description h2 {
+            color: #000000;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #1E293B 0%, #2d3e5a 50%, #5270A1 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-start:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>AI Traffic Control System</h1>
+        <p class="subtitle">Intelligent Traffic Management Using Computer Vision</p>
+
+        <div class="description">
+            <h2>Project Overview</h2>
+            <p>
+                This innovative AI-powered traffic control system revolutionizes intersection management by
+                dynamically adjusting traffic light timers based on real-time vehicle density. Using advanced
+                computer vision and the YOLOv5 object detection model, the system analyzes traffic flow at
+                each intersection and makes intelligent decisions to optimize traffic flow and reduce congestion.
+            </p>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>AI-Powered Detection</h3>
+                <p>Uses YOLOv5 deep learning model to accurately detect and count vehicles in real-time from camera
+                    feeds.</p>
+            </div>
+            <div class="feature">
+                <h3>Smart Red Lights</h3>
+                <p>Roads with no vehicles stay red, eliminating unnecessary wait times and improving efficiency.</p>
+            </div>
+            <div class="feature">
+                <h3>Real-Time Monitoring</h3>
+                <p>Live traffic light status display with countdown timers and vehicle count visualization.</p>
+            </div>
+            <div class="feature">
+                <h3>Flexible Configuration</h3>
+                <p>Support for multiple intersections with customizable number of traffic lights per junction.</p>
+            </div>
+        </div>
+
+        <button class="btn-start" onclick="location.href='/config'">
+            Get Started →
+        </button>
+    </div>
+</body>
+
+</html>

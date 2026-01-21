@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Light Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1E293B 0%, #2d3e5a 50%, #5270A1 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.5);
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(235, 51, 73, 0.4);
+        }
+
+        .btn-stop:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(235, 51, 73, 0.5);
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: #5a6268;
+            transform: translateY(-3px);
+        }
+
+        .intersection-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .traffic-light-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .traffic-light-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .card-header h2 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .road-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .traffic-light {
+            width: 120px;
+            height: 320px;
+            background: #2c3e50;
+            border-radius: 20px;
+            margin: 0 auto 25px;
+            padding: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .light {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #555;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .light.red.active {
+            background: radial-gradient(circle at 30% 30%, #ff0000, #cc0000);
+            box-shadow: 0 0 30px #ff0000, inset 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: glow-red 1.5s infinite alternate;
+        }
+
+        .light.yellow.active {
+            background: radial-gradient(circle at 30% 30%, #ffff00, #cccc00);
+            box-shadow: 0 0 30px #ffff00, inset 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: glow-yellow 1.5s infinite alternate;
+        }
+
+        .light.green.active {
+            background: radial-gradient(circle at 30% 30%, #00ff00, #00cc00);
+            box-shadow: 0 0 30px #00ff00, inset 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: glow-green 1.5s infinite alternate;
+        }
+
+        @keyframes glow-red {
+            from { box-shadow: 0 0 20px #ff0000, inset 0 0 10px rgba(0, 0, 0, 0.5); }
+            to { box-shadow: 0 0 40px #ff0000, inset 0 0 10px rgba(0, 0, 0, 0.5); }
+        }
+
+        @keyframes glow-yellow {
+            from { box-shadow: 0 0 20px #ffff00, inset 0 0 10px rgba(0, 0, 0, 0.5); }
+            to { box-shadow: 0 0 40px #ffff00, inset 0 0 10px rgba(0, 0, 0, 0.5); }
+        }
+
+        @keyframes glow-green {
+            from { box-shadow: 0 0 20px #00ff00, inset 0 0 10px rgba(0, 0, 0, 0.5); }
+            to { box-shadow: 0 0 40px #00ff00, inset 0 0 10px rgba(0, 0, 0, 0.5); }
+        }
+
+        .info-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .timer {
+            background: linear-gradient(135deg, #1E293B 0%, #2d3e5a 50%, #5270A1 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-size: 1.5em;
+            font-weight: 700;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .vehicle-count {
+            background: linear-gradient(135deg, #1E293B 0%, #2d3e5a 50%, #5270A1 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+
+        .status-red {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .status-yellow {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+
+        .status-green {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .system-status {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .system-status.active {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .system-status.inactive {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .intersection-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .btn {
+                margin: 5px;
+                padding: 12px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AI Traffic Control Monitor</h1>
+        <p>Real-time Intelligent Traffic Management System</p>
+    </div>
+
+    <div class="system-status" id="systemStatus">
+        <h3>System Status: <span id="statusText">Ready</span></h3>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-back" onclick="location.href='/config'">← Configure</button>
+        <button class="btn btn-stop" onclick="stopLights()">⏹ Stop System</button>
+    </div>
+
+    <div class="intersection-container" id="lightContainer">
+        <!-- Traffic light cards will be dynamically generated here -->
+    </div>
+
+    <script>
+        const numLights = {{ num_lights }};
+        let updateInterval;
+
+        function initializeTrafficLights() {
+            const container = document.getElementById('lightContainer');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= numLights; i++) {
+                const card = document.createElement('div');
+                card.className = 'traffic-light-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h2>Traffic Light ${i}</h2>
+                    </div>
+
+                    <div class="traffic-light">
+                        <div class="light red" id="red${i}"></div>
+                        <div class="light yellow" id="yellow${i}"></div>
+                        <div class="light green" id="green${i}"></div>
+                    </div>
+
+                    <div class="info-panel">
+                        <div class="info-row">
+                            <span class="info-label">Status:</span>
+                            <span class="status-badge status-red" id="status${i}">RED</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Timer:</span>
+                            <span class="timer" id="timer${i}">0s</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Vehicles:</span>
+                            <span class="vehicle-count" id="count${i}">0</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        async function startLights() {
+            try {
+                const response = await fetch('/start_lights', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                document.getElementById('systemStatus').className = 'system-status active';
+                document.getElementById('statusText').textContent = 'Active';
+                
+                // Start updating the lights status
+                if (!updateInterval) {
+                    updateInterval = setInterval(updateLightsStatus, 1000);
+                }
+            } catch (error) {
+                console.error('Error starting lights:', error);
+                alert('Failed to start traffic lights');
+            }
+        }
+
+        async function stopLights() {
+            try {
+                const response = await fetch('/stop_lights', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                document.getElementById('systemStatus').className = 'system-status inactive';
+                document.getElementById('statusText').textContent = 'Stopped';
+                
+                if (updateInterval) {
+                    clearInterval(updateInterval);
+                    updateInterval = null;
+                }
+
+                // Reset all lights to red
+                for (let i = 1; i <= numLights; i++) {
+                    updateLight(i, 'red', 0, 0);
+                }
+            } catch (error) {
+                console.error('Error stopping lights:', error);
+                alert('Failed to stop traffic lights');
+            }
+        }
+
+        async function updateLightsStatus() {
+            try {
+                const response = await fetch('/get_lights_status');
+                const data = await response.json();
+
+                for (let i = 1; i <= numLights; i++) {
+                    const lightId = i.toString();
+                    const status = data.status[lightId] || 'red';
+                    const timer = data.timers[lightId] || 0;
+                    const count = data.counts[lightId] || 0;
+
+                    updateLight(i, status, timer, count);
+                }
+            } catch (error) {
+                console.error('Error updating lights:', error);
+            }
+        }
+
+        function updateLight(lightId, status, timer, vehicleCount) {
+            // Update light bulbs
+            ['red', 'yellow', 'green'].forEach(color => {
+                const element = document.getElementById(`${color}${lightId}`);
+                if (element) {
+                    element.classList.remove('active');
+                }
+            });
+
+            if (status === 'red') {
+                const redLight = document.getElementById(`red${lightId}`);
+                if (redLight) redLight.classList.add('active');
+            } else if (status === 'yellow') {
+                const yellowLight = document.getElementById(`yellow${lightId}`);
+                if (yellowLight) yellowLight.classList.add('active');
+            } else if (status === 'green') {
+                const greenLight = document.getElementById(`green${lightId}`);
+                if (greenLight) greenLight.classList.add('active');
+            }
+
+            // Update status badge
+            const statusBadge = document.getElementById(`status${lightId}`);
+            if (statusBadge) {
+                statusBadge.textContent = status.toUpperCase();
+                statusBadge.className = `status-badge status-${status}`;
+            }
+
+            // Update timer
+            const timerElement = document.getElementById(`timer${lightId}`);
+            if (timerElement) {
+                timerElement.textContent = timer > 0 ? `${timer}s` : '0s';
+            }
+
+            // Update vehicle count
+            const countElement = document.getElementById(`count${lightId}`);
+            if (countElement) {
+                countElement.textContent = vehicleCount || 0;
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTrafficLights();
+            // Set initial state - all lights red
+            for (let i = 1; i <= numLights; i++) {
+                updateLight(i, 'red', 0, 0);
+            }
+            // Automatically start the traffic light system
+            setTimeout(function() {
+                startLights();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
